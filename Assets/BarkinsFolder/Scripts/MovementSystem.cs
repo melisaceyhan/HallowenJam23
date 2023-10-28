@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MovementSystem : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class MovementSystem : MonoBehaviour
     public bool isMissionDone = false;
 
     private Animator animator;
+
+    private Vector3 respawnPoint;
 
     private void Awake()
     {
@@ -53,5 +56,29 @@ public class MovementSystem : MonoBehaviour
             //transform.localScale = new Vector3(-1 * transform.localScale.x, 1, 1);
         }
 
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        /*
+        if (collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
+        else if (collision.tag == "Checkpoint")
+        {
+            respawnPoint = transform.position;
+        }*/
+        if (collision.tag == "NextLevel")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            // Or you can use SceneManager.LoadScene(1); to load a specific scene instead
+
+            respawnPoint = transform.position;
+        }
+        else if (collision.tag == "PreviousLevel")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            respawnPoint = transform.position;
+        }
     }
 }
