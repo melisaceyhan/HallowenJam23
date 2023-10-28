@@ -11,9 +11,14 @@ public class MovementSystem : MonoBehaviour
     public delegate void MovementSystemRight();
     public event MovementSystemRight movementSystemRight;
 
+    public bool isMissionDone = false;
+
     private void Awake()
     {
         Instance = this;
+        //Bu true olduðu zaman canavar ortaya çýkacak, o yüzden
+        //oyuncu görevi tamamlayana kadar false'da kalacak.
+        isMissionDone = false;
     }
 
     void Update()
