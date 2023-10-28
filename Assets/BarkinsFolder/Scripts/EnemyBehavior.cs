@@ -6,7 +6,7 @@ public class EnemyBehavior : MonoBehaviour
 {
     public int enemySpeed = 10;
     private bool isEating = false;
-    private Animator _animator;
+    public Animator _animator;
     public string animatonName;
     public int animationTime;
     public GameObject deadAnimObject;
@@ -23,40 +23,52 @@ public class EnemyBehavior : MonoBehaviour
         {
             EnemyGoesLeft();
         }
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            enemySpeed = 8;
+        }
+        else
+        {
+            enemySpeed = 25;
+        }
     }
 
     void EnemyGoesLeft()
     {
-        transform.Rotate(new Vector3(-1, 1, 1) * Time.deltaTime * enemySpeed);
+        transform.Rotate(new Vector3(0, 0 , -1) * Time.deltaTime * enemySpeed);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Eatable")
         {
-            StartCoroutine(EatingEatables());
-            if (collision.gameObject.tag == "Player")
-            {
-                StartCoroutine(EatingPlayer());
-            }
+            StartCoroutine(EatingEatables(collision));
         }
-
-        IEnumerator EatingEatables()
+        if (collision.gameObject.tag == "Player")
         {
-            isEating = true;
-            _animator.SetBool(animatonName, true);
-            yield return new WaitForSeconds(animationTime);
-            isEating = false;
+            StartCoroutine(EatingPlayer());
         }
+    }
 
-        IEnumerator EatingPlayer()
-        {
-            isEating = true;
-            _animator.SetBool(animationTime, true);
-            yield return new WaitForSeconds(animationTime);
-            int y = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(y + 1);
+    IEnumerator EatingEatables(Collider2D colliision)
+    {
+        isEating = true;
+        _animator.SetBool(animatonName, true);
+        yield return new WaitForSeconds(1f);
+        Destroy(colliision.gameObject);
+        yield return new WaitForSeconds(animationTime);
+        _animator.SetBool(animationTime, false);
+        isEating = false;
+    }
 
-        }
+    IEnumerator EatingPlayer()
+    {
+        isEating = true;
+        _animator.SetBool(animationTime, true);
+        yield return new WaitForSeconds(animationTime);
+        int y = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(y + 1);
+
     }
 }
