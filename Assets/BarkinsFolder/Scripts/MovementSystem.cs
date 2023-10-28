@@ -41,7 +41,7 @@ public class MovementSystem : MonoBehaviour
             animator.SetBool("Moving", true);
         }
 
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             movementSystemLeft();
             animator.SetBool("Moving", true);
@@ -50,7 +50,7 @@ public class MovementSystem : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             animator.SetBool("Moving", false);
-            transform.localScale = new Vector3(-1 * transform.localScale.x, 1, 1);
+            //transform.localScale = new Vector3(-1 * transform.localScale.x, 1, 1);
         }
 
     }

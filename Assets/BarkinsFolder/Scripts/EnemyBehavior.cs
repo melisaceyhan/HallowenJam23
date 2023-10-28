@@ -13,7 +13,7 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         isEating = false;
-        _animator = GetComponent<Animator>();
+        //_animator = GetComponent<Animator>();
     }
 
 
@@ -23,10 +23,14 @@ public class EnemyBehavior : MonoBehaviour
         {
             EnemyGoesLeft();
         }
+        else if(isEating&&Input.GetKey(KeyCode.A))
+        {
+            EnemyGoesRight();
+        }
 
         if (Input.GetKey(KeyCode.A))
         {
-            enemySpeed = 8;
+            enemySpeed = 6;
         }
         else
         {
@@ -38,6 +42,12 @@ public class EnemyBehavior : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, 0 , -1) * Time.deltaTime * enemySpeed);
     }
+    void EnemyGoesRight()
+    {
+        transform.Rotate(new Vector3(0, 0, 1) * Time.deltaTime * enemySpeed);
+    }
+
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -47,18 +57,18 @@ public class EnemyBehavior : MonoBehaviour
         }
         if (collision.gameObject.tag == "Player")
         {
-            StartCoroutine(EatingPlayer());
+            //StartCoroutine(EatingPlayer());
         }
     }
 
     IEnumerator EatingEatables(Collider2D colliision)
     {
         isEating = true;
-        _animator.SetBool(animatonName, true);
+        //_animator.SetBool(animatonName, true);
         yield return new WaitForSeconds(1f);
         Destroy(colliision.gameObject);
         yield return new WaitForSeconds(animationTime);
-        _animator.SetBool(animationTime, false);
+        //_animator.SetBool(animationTime, false);
         isEating = false;
     }
 
