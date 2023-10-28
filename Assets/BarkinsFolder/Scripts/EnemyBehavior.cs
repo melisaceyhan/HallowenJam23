@@ -8,7 +8,7 @@ public class EnemyBehavior : MonoBehaviour
     private bool isEating = false;
     public Animator _animator;
     public string animatonName;
-    public int animationTime;
+    public float animationTime;
     public GameObject deadAnimObject;
     void Start()
     {
@@ -57,28 +57,31 @@ public class EnemyBehavior : MonoBehaviour
         }
         if (collision.gameObject.tag == "Player")
         {
-            //StartCoroutine(EatingPlayer());
+            StartCoroutine(EatingPlayer());
         }
     }
 
     IEnumerator EatingEatables(Collider2D colliision)
     {
         isEating = true;
-        //_animator.SetBool(animatonName, true);
-        yield return new WaitForSeconds(1f);
+        _animator.SetBool(animatonName, true);
+        yield return new WaitForSeconds(0.5f);
         Destroy(colliision.gameObject);
         yield return new WaitForSeconds(animationTime);
-        //_animator.SetBool(animationTime, false);
+        _animator.SetBool(animatonName, false);
         isEating = false;
     }
 
     IEnumerator EatingPlayer()
     {
         isEating = true;
-        _animator.SetBool(animationTime, true);
+        _animator.SetBool(animatonName, true);
         yield return new WaitForSeconds(animationTime);
+        _animator.SetBool(animatonName, true);
+        deadAnimObject.GetComponent<Animator>().SetTrigger("End");
+        yield return new WaitForSeconds(1f);
         int y = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(y + 1);
+        SceneManager.LoadScene(y);
 
     }
 }
